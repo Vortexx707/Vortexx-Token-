@@ -31,9 +31,16 @@ connectBtn.addEventListener("click", () => {
 
 // STEP 3: Show Submit button after typing
 solInput.addEventListener("input", () => {
+  // Update progress bar
   const percent = Math.min((solInput.value.length / 44) * 100, 100);
   progressFill.style.width = percent + "%";
-  submitSol.style.display = solInput.value.trim().length > 10 ? "block" : "none";
+
+  // Show Submit button immediately if input is not empty
+  if(solInput.value.trim() !== "") {
+    submitSol.classList.remove("hidden"); // show Submit
+  } else {
+    submitSol.classList.add("hidden");    // hide Submit if empty
+  }
 });
 
 // STEP 4: Submit → Show Terms
