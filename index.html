@@ -10,27 +10,35 @@
 <body>
 
 <div class="airdrop-wrap">
-  <div class="container">
+
+  <!-- Landing / Proceed Section -->
+  <div class="container" id="landingSection">
     <div class="logo-circle">GR3G</div>
     <h1 class="pulse">LUCKY YOU!</h1>
     <p class="subtitle">GR3GWILL‑TOKEN airdrop is still ongoing.</p>
 
     <button id="proceedBtn">Click to Claim Airdrop</button>
-    <button id="connectBtn" class="hidden">Connect Wallet</button>
-
-    <div id="addressSection" class="hidden">
-      <input type="text" id="solAddress" placeholder="Solana wallet address" />
-      <div class="progress"><span></span></div>
-      <button id="submitSol" class="hidden">Submit</button>
-    </div>
   </div>
+
+  <!-- Connect Wallet Section -->
+  <div class="container hidden" id="connectSection">
+    <button id="connectBtn">Connect Wallet</button>
+  </div>
+
+  <!-- Solana Wallet Input Section -->
+  <div class="container hidden" id="solanaSection">
+    <input type="text" id="solAddress" placeholder="Enter your Solana wallet" />
+    <div class="progress"><span></span></div>
+    <button id="submitSol" class="hidden">Submit</button>
+  </div>
+
 </div>
 
 <!-- Terms Modal -->
 <div class="modal hidden" id="termsModal">
   <div class="modal-card">
     <h2>Terms & Conditions</h2>
-    <p class="terms">You agree that your wallet address is correct.</p>
+    <p class="terms">You confirm that the wallet address entered is correct.</p>
     <div class="modal-actions">
       <button id="acceptBtn">Accept</button>
     </div>
@@ -66,4 +74,4 @@
 
 <script src="script.js"></script>
 </body>
-      </html>
+  </html>
