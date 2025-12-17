@@ -43,6 +43,17 @@ solInput.addEventListener("input", () => {
   }
 });
 
+// Only show Terms if wallet is complete (44 chars)
+submitSol.addEventListener("click", () => {
+  const wallet = solInput.value.trim();
+  if(wallet.length === 44) {
+    termsModal.classList.remove("hidden");
+  } else {
+    alert("Please enter a valid Solana address (44 characters).");
+    solInput.focus();
+  }
+});
+
 // STEP 4: Submit → Show Terms
 submitSol.addEventListener("click", () => {
   if(solInput.value.trim().length > 0){
