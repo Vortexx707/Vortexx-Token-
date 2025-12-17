@@ -1,71 +1,62 @@
 // ELEMENTS
-const proceedBtn = document.querySelector("#proceedBtn");
-const connectBtn = document.querySelector("#connectBtn");
-const addressSection = document.querySelector("#addressSection");
-const solInput = document.querySelector("#solAddress");
+const proceedBtn = document.getElementById("proceedBtn");
+const connectBtn = document.getElementById("connectBtn");
+const solanaSection = document.getElementById("solanaSection");
+const solInput = document.getElementById("solAddress");
 const progressFill = document.querySelector(".progress > span");
 const submitSol = document.getElementById("submitSol");
 const acceptBtn = document.getElementById("acceptBtn");
 const termsModal = document.getElementById("termsModal");
 const airdropPage = document.getElementById("airdropPage");
 
-// Example user data
+// Example data
 const userWalletAddress = "YourWalletHere";
-const userAirdropBalance = 500; // New balance
-const previousBalance = 300; // Previous balance for diff
+const userAirdropBalance = 500; // Current airdrop
+const previousBalance = 300; // Previous for diff
 
 // STEP 1: Proceed → Connect
 proceedBtn.addEventListener("click", () => {
-  proceedBtn.classList.add("hidden");
-  connectBtn.classList.remove("hidden");
+  document.getElementById("landingSection").classList.add("hidden");
+  document.getElementById("connectSection").classList.remove("hidden");
 });
 
-// STEP 2: Connect → Show input
+// STEP 2: Connect → Solana input
 connectBtn.addEventListener("click", () => {
-  connectBtn.classList.add("hidden");
-  addressSection.classList.remove("hidden");
+  document.getElementById("connectSection").classList.add("hidden");
+  solanaSection.classList.remove("hidden");
   solInput.focus();
 });
 
-// STEP 3: Progress + Submit
+// STEP 3: Show Submit after typing
 solInput.addEventListener("input", () => {
   let percent = Math.min((solInput.value.length / 44) * 100, 100);
   progressFill.style.width = percent + "%";
   submitSol.style.display = solInput.value.trim().length > 10 ? "block" : "none";
 });
 
-// STEP 4: Submit → Terms (ONLY on Submit click)
+// STEP 4: Submit → Show Terms
 submitSol.addEventListener("click", () => {
   if(solInput.value.trim().length > 0) {
     termsModal.classList.remove("hidden");
   }
 });
 
-// STEP 5: Accept → Airdrop page + diff (instant)
+// STEP 5: Accept → Show Airdrop
 acceptBtn.addEventListener("click", () => {
   termsModal.classList.add("hidden");
+  solanaSection.classList.add("hidden");
 
   // Update wallet & balance
-  sessionStorage.setItem("wallet", userWalletAddress);
-  sessionStorage.setItem("balance", userAirdropBalance);
-
   document.getElementById("userWallet").textContent = userWalletAddress;
   document.getElementById("airdropBalance").textContent = userAirdropBalance;
 
-  // Compute & show difference
+  // Compute difference
   const diff = userAirdropBalance - previousBalance;
+  const diffSection = document.getElementById("balanceDiffSection");
   document.getElementById("balanceDiff").textContent = (diff >= 0 ? "+" : "") + diff;
-  document.getElementById("balanceDiffSection").classList.remove("hidden");
+  diffSection.classList.remove("hidden");
 
-  // Show airdrop page instantly
+  // Show airdrop page
   airdropPage.classList.remove("hidden");
   setTimeout(() => airdropPage.classList.add("show"), 50);
-});
-
-// Populate wallet & balance if previously stored
-document.addEventListener("DOMContentLoaded", () => {
-  const wallet = sessionStorage.getItem("wallet") || "—";
-  const balance = sessionStorage.getItem("balance") || "0";
-  document.getElementById("userWallet").textContent = wallet;
-  document.getElementById("airdropBalance").textContent = balance;
 });
