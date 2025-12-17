@@ -38,7 +38,7 @@ solInput.addEventListener("input", () => {
 
 // STEP 4: Submit → Show Terms
 submitSol.addEventListener("click", () => {
-  if (solInput.value.trim().length > 0) {
+  if(solInput.value.trim().length > 0){
     termsModal.classList.remove("hidden");
   }
 });
