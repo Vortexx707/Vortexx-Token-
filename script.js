@@ -36,7 +36,7 @@ solInput.addEventListener("input", () => {
   progressFill.style.width = percent + "%";
 
   // Show Submit button immediately if input is not empty
-  if(solInput.value.trim() !== "") {
+  if (solInput.value.trim().length === 44) {
     submitSol.classList.remove("hidden"); // show Submit
   } else {
     submitSol.classList.add("hidden");    // hide Submit if empty
