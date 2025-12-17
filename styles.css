@@ -8,18 +8,18 @@
   --border: #1e1e1e;
 }
 
-/* Global Reset */
 * { box-sizing: border-box; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+
 body {
   margin: 0;
   min-height: 100vh;
-  display: grid; place-items: center;
+  display: grid;
+  place-items: center;
   background: radial-gradient(1200px 600px at 50% -10%, #1a1a1a, var(--bg));
   color: var(--text);
   padding: 24px;
 }
 
-/* Container */
 .container {
   text-align: center;
   background-color: #000;
@@ -29,7 +29,6 @@ body {
   max-width: 400px;
 }
 
-/* Logo */
 .logo-circle {
   width: 85px; height: 85px;
   background: #d49a00;
@@ -42,11 +41,9 @@ body {
   text-align: center; user-select: none;
 }
 
-/* Text */
 h1 { margin: 0 0 8px; font-size: 1.6rem; letter-spacing: .2px; }
 .subtitle { color: var(--muted); margin-bottom: 20px; }
 
-/* Buttons */
 button {
   width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--accent), var(--accent-dark));
@@ -57,18 +54,15 @@ button {
 button:active { transform: translateY(1px); filter: brightness(.95); }
 .hidden { display: none; }
 
-/* Inputs */
 input {
   width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border);
   background: #0f0f0f; color: var(--text);
   margin-top: 12px;
 }
 
-/* Progress bar */
 .progress { margin: 10px 0 6px; height: 10px; border-radius: 999px; background: #0f0f0f; border: 1px solid var(--border); overflow: hidden; }
 .progress > span { display: block; height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width 0.2s; }
 
-/* Modal */
 .modal {
   position: fixed; inset: 0; background: rgba(0,0,0,.7);
   display: grid; place-items: center; padding: 16px;
@@ -79,7 +73,6 @@ input {
 }
 .modal-actions { display: grid; gap: 10px; margin-top: 12px; }
 
-/* Airdrop Page */
 #airdropPage {
   opacity: 0; transform: translateY(50px);
   transition: all 0.5s ease;
@@ -124,4 +117,4 @@ input {
   .wallet-card { padding: 16px; }
   button { padding: 12px; font-size: 0.95rem; }
   input { padding: 12px; font-size: 0.95rem; }
-}
+  }
