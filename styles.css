@@ -30,7 +30,7 @@ body {
 
 .logo-circle {
   width: 85px; height: 85px;
-  background: #d49a00;
+  background: #000080;
   border-radius: 50%;
   display: flex; justify-content: center; align-items: center;
   margin: 0 auto 25px auto;
