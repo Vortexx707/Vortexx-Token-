@@ -16,8 +16,7 @@ body {
   display: grid;
   place-items: center;
   background: radial-gradient(1200px 600px at 50% -10%, #1a1a1a, var(--bg));
-  color: var(--text);
-  padding: 24px;
+  color: var(--text);  padding: 24px;
 }
 
 .container {
