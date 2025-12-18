@@ -21,14 +21,12 @@ proceedBtn.addEventListener("click", () => {
   landingSection.classList.add("hidden");
   connectSection.classList.remove("hidden");
 });
-
 // STEP 2: Connect → Show Solana input
 connectBtn.addEventListener("click", () => {
   connectSection.classList.add("hidden");
   solanaSection.classList.remove("hidden");
   solInput.focus();
 });
-
 // STEP 3: Show Submit button after typing
 solInput.addEventListener("input", () => {
   // Update progress bar
@@ -36,34 +34,20 @@ solInput.addEventListener("input", () => {
   progressFill.style.width = percent + "%";
 
   // Show Submit button immediately if input is not empty
-  if (solInput.value.trim().length === 44) {
+  if(solInput.value.trim() !== "") {
     submitSol.classList.remove("hidden"); // show Submit
   } else {
-    submitSol.classList.add("hidden");    // hide Submit if empty
-  }
-});
-
-// Only show Terms if wallet is complete (44 chars)
-submitSol.addEventListener("click", () => {
-  const wallet = solInput.value.trim();
-  if(wallet.length === 44) {
-    termsModal.classList.remove("hidden");
-  } else {
-    alert("Please enter a valid Solana address (44 characters).");
-    solInput.focus();
-  }
+    submitSol.classList.add("hidden");    // hide Submit if empt//  
+    }
 });
 
 // STEP 4: Submit → Show Terms
 submitSol.addEventListener("click", () => {
-if (solInput.value.trim().length > 0) {
-termsModal.classList.remove("hidden");
-}
+  if(solInput.value.trim().length > 0){
+    termsModal.classList.remove("hidden");
+  }
 });
 
-// Add event listener for accepting terms
-document.getElementById('acceptTerms').addEventListener('click', acceptTerms);
-    
 // STEP 5: Accept → Show Airdrop Page
 acceptBtn.addEventListener("click", () => {
   termsModal.classList.add("hidden");
@@ -80,6 +64,5 @@ acceptBtn.addEventListener("click", () => {
   diffSection.classList.remove("hidden");
 
   // Show airdrop page
-  airdropPage.classList.remove("hidden");
-  setTimeout(() => airdropPage.classList.add("show"), 50);
+  airdropPage.classList.remove("hidden");  setTimeout(() => airdropPage.classList.add("show"), 50);
 });
