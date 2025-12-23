@@ -43,10 +43,13 @@ solInput.addEventListener("input", () => {
 
 // STEP 4: Submit → Show Terms
 submitSol.addEventListener("click", () => {
-  if(solInput.value.trim().length > 0){
-    termsModal.classList.remove("hidden");
-  }
+if (solInput.value.trim().length > 0) {
+termsModal.classList.remove("hidden");
+}
 });
+
+// Add event listener for accepting terms
+
 
 // STEP 5: Accept → Show Airdrop Page
 acceptBtn.addEventListener("click", () => {
