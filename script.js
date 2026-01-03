@@ -16,56 +16,91 @@ const userWalletAddress = "YourWalletHere";
 const userAirdropBalance = 500;
 const previousBalance = 300;
 
-// STEP 1: Proceed → Connect
+// Step 1
 proceedBtn.addEventListener("click", () => {
   landingSection.classList.add("hidden");
   connectSection.classList.remove("hidden");
 });
-// STEP 2: Connect → Show Solana input
+
+// Step 2
 connectBtn.addEventListener("click", () => {
   connectSection.classList.add("hidden");
   solanaSection.classList.remove("hidden");
   solInput.focus();
 });
-// STEP 3: Show Submit button after typing
+
+// Step 3
 solInput.addEventListener("input", () => {
-  // Update progress bar
   const percent = Math.min((solInput.value.length / 44) * 100, 100);
   progressFill.style.width = percent + "%";
-
-  // Show Submit button immediately if input is not empty
-  if(solInput.value.trim() !== "") {
-    submitSol.classList.remove("hidden"); // show Submit
-  } else {
-    submitSol.classList.add("hidden");    // hide Submit if empt//  
-    }
+  solInput.value.trim() !== ""
+    ? submitSol.classList.remove("hidden")
+    : submitSol.classList.add("hidden");
 });
 
-// STEP 4: Submit → Show Terms
+// Step 4
 submitSol.addEventListener("click", () => {
-if (solInput.value.trim().length > 0) {
-termsModal.classList.remove("hidden");
-}
+  if (solInput.value.trim()) termsModal.classList.remove("hidden");
 });
 
-// Add event listener for accepting terms
-
-
-// STEP 5: Accept → Show Airdrop Page
+// Step 5
 acceptBtn.addEventListener("click", () => {
   termsModal.classList.add("hidden");
   solanaSection.classList.add("hidden");
 
-  // Update wallet & balance
   document.getElementById("userWallet").textContent = userWalletAddress;
   document.getElementById("airdropBalance").textContent = userAirdropBalance;
 
-  // Compute balance diff
   const diff = userAirdropBalance - previousBalance;
-  const diffSection = document.getElementById("balanceDiffSection");
-  document.getElementById("balanceDiff").textContent = (diff >= 0 ? "+" : "") + diff;
-  diffSection.classList.remove("hidden");
+  document.getElementById("balanceDiff").textContent =
+    (diff >= 0 ? "+" : "") + diff;
+  document.getElementById("balanceDiffSection").classList.remove("hidden");
 
-  // Show airdrop page
-  airdropPage.classList.remove("hidden");  setTimeout(() => airdropPage.classList.add("show"), 50);
+  airdropPage.classList.remove("hidden");
+  setTimeout(() => airdropPage.classList.add("show"), 50);
 });
+
+// -------- Wallet Integration --------
+const walletChoiceModal = document.getElementById("walletChoiceModal");
+const evmWalletBtn = document.getElementById("evmWalletBtn");
+const phantomWalletBtn = document.getElementById("phantomWalletBtn");
+const cancelWalletBtn = document.getElementById("cancelWalletBtn");
+
+let web3ModalInstance;
+
+window.addEventListener("load", () => {
+  web3ModalInstance = new window.Web3Modal.default({
+    cacheProvider: false,
+    providerOptions: {
+      walletconnect: {
+        package: window.WalletConnectProvider.default,
+        options: { rpc: { 1: "https://rpc.ankr.com/eth" } }
+      }
+    }
+  });
+});
+
+connectBtn.addEventListener("click", (e) => {
+  e.stopImmediatePropagation();
+  walletChoiceModal.classList.remove("hidden");
+});
+
+cancelWalletBtn.onclick = () =>
+  walletChoiceModal.classList.add("hidden");
+
+evmWalletBtn.onclick = async () => {
+  walletChoiceModal.classList.add("hidden");
+  const provider = await web3ModalInstance.connect();
+  const ethersProvider = new ethers.providers.Web3Provider(provider);
+  const signer = ethersProvider.getSigner();
+  solInput.value = await signer.getAddress();
+  submitSol.classList.remove("hidden");
+};
+
+phantomWalletBtn.onclick = async () => {
+  walletChoiceModal.classList.add("hidden");
+  if (!window.solana || !window.solana.isPhantom)
+    return alert("Phantom Wallet not installed");
+  solInput.value = (await window.solana.connect()).publicKey.toString();
+  submitSol.classList.remove("hidden");
+};
