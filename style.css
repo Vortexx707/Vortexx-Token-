@@ -8,7 +8,10 @@
   --border: #1e1e1e;
 }
 
-* { box-sizing: border-box; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; }
+* {
+  box-sizing: border-box;
+  font-family: Cambria, Georgia, serif;
+}
 
 body {
   margin: 0;
@@ -16,7 +19,8 @@ body {
   display: grid;
   place-items: center;
   background: radial-gradient(1200px 600px at 50% -10%, #1a1a1a, var(--bg));
-  color: var(--text);  padding: 24px;
+  color: var(--text);
+  padding: 24px;
 }
 
 .container {
@@ -29,75 +33,47 @@ body {
 }
 
 .logo-circle {
-  width: 85px; height: 85px;
+  width: 85px;
+  height: 85px;
   background: #000080;
   border-radius: 50%;
-  display: flex; justify-content: center; align-items: center;
-  margin: 0 auto 25px auto;
-  font-size: 32px; font-weight: bold; color: #000;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 25px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #000;
 }
-
-h1 { margin: 0 0 8px; font-size: 1.6rem; }
-.subtitle { color: var(--muted); margin-bottom: 20px; }
 
 button {
-  width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border);
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--accent), var(--accent-dark));
-  color: #1a1200; font-weight: 700; cursor: pointer;
-  transition: transform .05s ease, filter .15s ease;
-}
-button:active { transform: translateY(1px); filter: brightness(.95); }
-.hidden { display: none !important; }
-
-input {
-  width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border);
-  background: #0f0f0f; color: var(--text); margin-top: 12px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.progress { margin: 10px 0 6px; height: 10px; border-radius: 999px; background: #0f0f0f; border: 1px solid var(--border); overflow: hidden; }
-.progress > span { display: block; height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width 0.2s; }
+.hidden {
+  display: none !important;
+}
 
-/* ------------------ Fixed Modal CSS ------------------ */
-.modal.hidden { display: none !important; }
 .modal {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 16px;
   background: rgba(0,0,0,.7);
   z-index: 9999;
 }
+
 .modal-card {
-  width: 100%; max-width: 420px; background: #fff; color: #000;
-  border-radius: 16px; padding: 20px;
-}
-.modal-actions { display: grid; gap: 10px; margin-top: 12px; }
-
-#airdropPage {
-  opacity: 0; transform: translateY(50px);
-  transition: all 0.5s ease;
-}
-#airdropPage.show { opacity: 1; transform: translateY(0); }
-
-.wallet-card {
-  background: #111;
+  background: #fff;
+  color: #000;
   border-radius: 16px;
   padding: 20px;
-  max-width: 400px;
-  margin: 24px auto;
-  color: var(--text);
-}
-
-.wallet-header { display: flex; align-items: center; gap: 12px; }
-.wallet-icon { width:50px; height:50px; background: var(--accent); border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; color:#000; font-size:1.2rem; }
-
-.balance-section, .balance-diff-section { margin-top:16px; display:flex; justify-content:space-between; align-items:center; }
-.balance-diff-section { color: var(--accent); }
-
-@media (max-width:480px) {
-  .container { padding:16px; width:95%; }
-  .wallet-card { padding:16px; }
-  button, input { font-size:0.95rem; padding:12px; }
+  max-width: 420px;
+  width: 100%;
   }
