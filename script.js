@@ -122,3 +122,15 @@ phantomWalletBtn.onclick = async () => {
   solanaSection.classList.remove("hidden");
   submitSol.classList.remove("hidden");
 };
+// -------- FIX: Force wallet modal to open (no changes to existing code) --------
+connectBtn.addEventListener(
+  "click",
+  (e) => {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Show wallet selector modal
+    walletChoiceModal.classList.remove("hidden");
+  },
+  true // capture phase so this runs BEFORE existing listeners
+);
