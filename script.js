@@ -1,70 +1,52 @@
-// -------------------- CONFIG --------------------
-const WALLETCONNECT_PROJECT_ID = "85d1310d55b14854c6d62bab3b779200";
-
-// -------------------- ELEMENTS --------------------
+// ELEMENTS
 const landingSection = document.getElementById("landingSection");
 const connectSection = document.getElementById("connectSection");
 const solanaSection = document.getElementById("solanaSection");
-
 const proceedBtn = document.getElementById("proceedBtn");
 const connectBtn = document.getElementById("connectBtn");
-
 const solInput = document.getElementById("solAddress");
 const submitSol = document.getElementById("submitSol");
 const progressFill = document.querySelector(".progress > span");
-
 const termsModal = document.getElementById("termsModal");
 const acceptBtn = document.getElementById("acceptBtn");
-
 const airdropPage = document.getElementById("airdropPage");
 
+// Wallet buttons
 const walletChoiceModal = document.getElementById("walletChoiceModal");
 const evmWalletBtn = document.getElementById("evmWalletBtn");
-const phantomWalletBtn = document.getElementById("phantomWalletBtn");
-const cancelWalletBtn = document.getElementById("cancelWalletBtn");
+const solanaWalletBtn = document.getElementById("solanaWalletBtn");
 
-// -------------------- USER DATA (DEMO) --------------------
+// User Data
+const userWalletAddress = "YourWalletHere";
 const userAirdropBalance = 500;
 const previousBalance = 300;
 
-// -------------------- UI FLOW --------------------
+// FLOW
 proceedBtn.onclick = () => {
   landingSection.classList.add("hidden");
   connectSection.classList.remove("hidden");
 };
 
-connectBtn.onclick = (e) => {
-  e.stopPropagation();
+connectBtn.onclick = () => {
+  connectSection.classList.add("hidden");
   walletChoiceModal.classList.remove("hidden");
 };
 
-cancelWalletBtn.onclick = () => {
-  walletChoiceModal.classList.add("hidden");
-};
-
-// -------------------- INPUT PROGRESS --------------------
-solInput.addEventListener("input", () => {
+solInput.oninput = () => {
   const percent = Math.min((solInput.value.length / 44) * 100, 100);
   progressFill.style.width = percent + "%";
-
-  solInput.value.trim()
-    ? submitSol.classList.remove("hidden")
-    : submitSol.classList.add("hidden");
-});
-
-// -------------------- SUBMIT --------------------
-submitSol.onclick = () => {
-  if (solInput.value.trim()) {
-    termsModal.classList.remove("hidden");
-  }
+  submitSol.classList.toggle("hidden", !solInput.value.trim());
 };
 
-// -------------------- ACCEPT TERMS --------------------
+submitSol.onclick = () => {
+  if (solInput.value.trim()) termsModal.classList.remove("hidden");
+};
+
 acceptBtn.onclick = () => {
   termsModal.classList.add("hidden");
   solanaSection.classList.add("hidden");
 
-  document.getElementById("userWallet").textContent = solInput.value;
+  document.getElementById("userWallet").textContent = userWalletAddress;
   document.getElementById("airdropBalance").textContent = userAirdropBalance;
 
   const diff = userAirdropBalance - previousBalance;
@@ -75,72 +57,61 @@ acceptBtn.onclick = () => {
   airdropPage.classList.remove("hidden");
 };
 
-// -------------------- EVM (WalletConnect v2) --------------------
-let ethereumProvider;
+// -------- EVM (WalletConnect v2) --------
+const projectId = "85d1310d55b14854c6d62bab3b779200";
+
+const ethereumClient = new window.Web3ModalEthereum.EthereumClient(
+  window.Web3ModalEthereum.wagmiConfig({
+    projectId,
+    chains: [
+      {
+        id: 1,
+        name: "Ethereum",
+        network: "mainnet",
+        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+        rpcUrls: { default: "https://rpc.ankr.com/eth" }
+      }
+    ]
+  }),
+  [{ id: 1 }]
+);
+
+const web3Modal = new window.Web3ModalHTML.Web3Modal(
+  { projectId, themeMode: "dark" },
+  ethereumClient
+);
 
 evmWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
+  await web3Modal.openModal();
 
-  try {
-    ethereumProvider = await window.EthereumProvider.init({
-      projectId: "85d1310d55b14854c6d62bab3b779200",
-      chains: [1],
-      showQrModal: true,
-      methods: ["eth_requestAccounts"],
-      events: ["accountsChanged", "chainChanged"]
-    });
+  const provider = await ethereumClient.getProvider();
+  const ethersProvider = new ethers.providers.Web3Provider(provider);
+  const signer = ethersProvider.getSigner();
 
-    await ethereumProvider.enable();
-
-    const ethersProvider = new ethers.providers.Web3Provider(ethereumProvider);
-    const signer = ethersProvider.getSigner();
-    const address = await signer.getAddress();
-
-    connectSection.classList.add("hidden");
-    solanaSection.classList.remove("hidden");
-    solInput.value = address;
-    submitSol.classList.remove("hidden");
-
-  } catch (err) {
-    alert("EVM wallet connection cancelled");
-    console.error(err);
-  }
+  solInput.value = await signer.getAddress();
+  solanaSection.classList.remove("hidden");
+  submitSol.classList.remove("hidden");
 };
 
-// -------------------- SOLANA (PHANTOM → SOLFLARE FALLBACK) --------------------
-phantomWalletBtn.onclick = async () => {
+// -------- SOLANA (Phantom OR Solflare) --------
+solanaWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
 
-  try {
-    // PHANTOM FIRST
-    if (window.phantom?.solana?.isPhantom) {
-      const res = await window.phantom.solana.connect();
-      connectSection.classList.add("hidden");
-      solanaSection.classList.remove("hidden");
-      solInput.value = res.publicKey.toString();
-      submitSol.classList.remove("hidden");
-      return;
-    }
+  let provider = window.phantom?.solana || window.solana;
 
-    // SOLFLARE FALLBACK
-    let solflare = window.solflare;
-    if (!solflare && window.Solflare) {
-      solflare = new window.Solflare();
-    }
-
-    if (solflare) {
-      await solflare.connect();
-      connectSection.classList.add("hidden");
-      solanaSection.classList.remove("hidden");
-      solInput.value = solflare.publicKey.toString();
-      submitSol.classList.remove("hidden");
-      return;
-    }
-
-    alert("No Solana wallet detected. Use Phantom or Solflare browser.");
-
-  } catch (err) {
-    alert("Solana wallet connection failed");
-    console.error(err);
+  if (provider?.isPhantom) {
+    const res = await provider.connect();
+    solInput.value = res.publicKey.toString();
+  } else if (window.solflare || window.Solflare) {
+    const solflare = window.solflare || new window.Solflare();
+    await solflare.connect();
+    solInput.value = solflare.publicKey.toString();
+  } else {
+    alert("Open this site in Phantom or Solflare browser");
+    return;
   }
+
+  solanaSection.classList.remove("hidden");
+  submitSol.classList.remove("hidden");
 };
