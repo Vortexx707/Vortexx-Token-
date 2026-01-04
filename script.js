@@ -25,8 +25,7 @@ proceedBtn.addEventListener("click", () => {
 // Step 2
 connectBtn.addEventListener("click", () => {
   connectSection.classList.add("hidden");
-  solanaSection.classList.remove("hidden");
-  solInput.focus();
+  walletChoiceModal.classList.remove("hidden");
 });
 
 // Step 3
@@ -64,43 +63,104 @@ acceptBtn.addEventListener("click", () => {
 const walletChoiceModal = document.getElementById("walletChoiceModal");
 const evmWalletBtn = document.getElementById("evmWalletBtn");
 const phantomWalletBtn = document.getElementById("phantomWalletBtn");
+const solflareWalletBtn = document.getElementById("solflareWalletBtn");
 const cancelWalletBtn = document.getElementById("cancelWalletBtn");
-
-let web3ModalInstance;
-
-window.addEventListener("load", () => {
-  web3ModalInstance = new window.Web3Modal.default({
-    cacheProvider: false,
-    providerOptions: {
-      walletconnect: {
-        package: window.WalletConnectProvider.default,
-        options: { rpc: { 1: "https://rpc.ankr.com/eth" } }
-      }
-    }
-  });
-});
-
-connectBtn.addEventListener("click", (e) => {
-  e.stopImmediatePropagation();
-  walletChoiceModal.classList.remove("hidden");
-});
 
 cancelWalletBtn.onclick = () =>
   walletChoiceModal.classList.add("hidden");
 
+
+// =======================================================
+// 🔐 WalletConnect v2 (EVM) — Trust, MetaMask, Coinbase
+// =======================================================
+
+const projectId = "85d1310d55b14854c6d62bab3b779200"; // 👈 REQUIRED
+
+const ethereumClient = new window.Web3ModalEthereum.EthereumClient(
+  window.Web3ModalEthereum.wagmiConfig({
+    projectId,
+    chains: [
+      {
+        id: 1,
+        name: "Ethereum",
+        network: "mainnet",
+        nativeCurrency: {
+          name: "Ether",
+          symbol: "ETH",
+          decimals: 18
+        },
+        rpcUrls: {
+          default: "https://rpc.ankr.com/eth"
+        }
+      }
+    ]
+  }),
+  [{ id: 1 }]
+);
+
+const web3Modal = new window.Web3ModalHTML.Web3Modal(
+  {
+    projectId,
+    themeMode: "dark"
+  },
+  ethereumClient
+);
+
+// EVM CONNECT
 evmWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
-  const provider = await web3ModalInstance.connect();
+
+  await web3Modal.openModal();
+  const provider = await ethereumClient.getProvider();
   const ethersProvider = new ethers.providers.Web3Provider(provider);
   const signer = ethersProvider.getSigner();
+
   solInput.value = await signer.getAddress();
+  solanaSection.classList.remove("hidden");
   submitSol.classList.remove("hidden");
 };
 
+
+// =======================================================
+// 🟣 Phantom Wallet (v2 Injection)
+// =======================================================
+
 phantomWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
-  if (!window.solana || !window.solana.isPhantom)
-    return alert("Phantom Wallet not installed");
-  solInput.value = (await window.solana.connect()).publicKey.toString();
+
+  const provider = window.phantom?.solana || window.solana;
+  if (!provider || !provider.isPhantom) {
+    alert("Phantom not detected. Open site in Phantom browser.");
+    return;
+  }
+
+  const res = await provider.connect();
+  solInput.value = res.publicKey.toString();
+  solanaSection.classList.remove("hidden");
+  submitSol.classList.remove("hidden");
+};
+
+
+// =======================================================
+// 🟠 Solflare Wallet (v2 Injection)
+// =======================================================
+
+solflareWalletBtn.onclick = async () => {
+  walletChoiceModal.classList.add("hidden");
+
+  let solflareProvider = window.solflare;
+
+  if (!solflareProvider && window.Solflare) {
+    solflareProvider = new window.Solflare();
+  }
+
+  if (!solflareProvider) {
+    alert("Solflare not detected. Open site in Solflare browser.");
+    return;
+  }
+
+  await solflareProvider.connect();
+  solInput.value = solflareProvider.publicKey.toString();
+  solanaSection.classList.remove("hidden");
   submitSol.classList.remove("hidden");
 };
