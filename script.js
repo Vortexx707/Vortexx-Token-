@@ -25,8 +25,7 @@ proceedBtn.addEventListener("click", () => {
 // Step 2
 connectBtn.addEventListener("click", () => {
   connectSection.classList.add("hidden");
-  solanaSection.classList.remove("hidden");
-  solInput.focus();
+  walletChoiceModal.classList.remove("hidden");
 });
 
 // Step 3
@@ -64,6 +63,7 @@ acceptBtn.addEventListener("click", () => {
 const walletChoiceModal = document.getElementById("walletChoiceModal");
 const evmWalletBtn = document.getElementById("evmWalletBtn");
 const phantomWalletBtn = document.getElementById("phantomWalletBtn");
+const solflareWalletBtn = document.getElementById("solflareWalletBtn");
 const cancelWalletBtn = document.getElementById("cancelWalletBtn");
 
 let web3ModalInstance;
@@ -80,11 +80,6 @@ window.addEventListener("load", () => {
   });
 });
 
-connectBtn.addEventListener("click", (e) => {
-  e.stopImmediatePropagation();
-  walletChoiceModal.classList.remove("hidden");
-});
-
 cancelWalletBtn.onclick = () =>
   walletChoiceModal.classList.add("hidden");
 
@@ -94,6 +89,7 @@ evmWalletBtn.onclick = async () => {
   const ethersProvider = new ethers.providers.Web3Provider(provider);
   const signer = ethersProvider.getSigner();
   solInput.value = await signer.getAddress();
+  solanaSection.classList.remove("hidden");
   submitSol.classList.remove("hidden");
 };
 
@@ -101,6 +97,20 @@ phantomWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
   if (!window.solana || !window.solana.isPhantom)
     return alert("Phantom Wallet not installed");
-  solInput.value = (await window.solana.connect()).publicKey.toString();
+
+  const res = await window.solana.connect({ onlyIfTrusted: false });
+  solInput.value = res.publicKey.toString();
+  solanaSection.classList.remove("hidden");
+  submitSol.classList.remove("hidden");
+};
+
+solflareWalletBtn.onclick = async () => {
+  walletChoiceModal.classList.add("hidden");
+  if (!window.Solflare) return alert("Solflare Wallet not installed");
+
+  const solflare = new window.Solflare();
+  await solflare.connect();
+  solInput.value = solflare.publicKey.toString();
+  solanaSection.classList.remove("hidden");
   submitSol.classList.remove("hidden");
 };
