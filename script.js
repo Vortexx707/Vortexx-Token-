@@ -83,7 +83,7 @@ evmWalletBtn.onclick = async () => {
 
   try {
     ethereumProvider = await window.EthereumProvider.init({
-      projectId: WALLETCONNECT_PROJECT_ID,
+      projectId: "85d1310d55b14854c6d62bab3b779200",
       chains: [1],
       showQrModal: true,
       methods: ["eth_requestAccounts"],
