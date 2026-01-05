@@ -67,20 +67,27 @@ acceptBtn.onclick = () => {
 evmWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
 
-  if (!window.ethereum) {
-    alert("No EVM wallet detected. Install MetaMask or Trust Wallet.");
+  // Check for injected wallets
+  const eth = window.ethereum || window.web3?.currentProvider;
+
+  if (!eth) {
+    // For testing: fallback to alert
+    alert(
+      "No EVM wallet detected.\n\nInstall MetaMask, Trust Wallet, or Coinbase Wallet in your browser to test this feature."
+    );
     return;
   }
 
   try {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts"
-    });
+    // Request accounts
+    const accounts = await eth.request
+      ? await eth.request({ method: "eth_requestAccounts" })
+      : await new Promise((res, rej) => eth.enable().then(res).catch(rej));
 
     solInput.value = accounts[0];
     solanaSection.classList.remove("hidden");
     submitSol.classList.remove("hidden");
-  } catch (err) {
+  } catch {
     alert("Wallet connection rejected.");
   }
 };
